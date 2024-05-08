@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Shopping List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Pangolin&display=swap" rel="stylesheet">
+  <meta name="author" content="Linus Schwalm">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script defer src="./js/app.js"></script>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+</head>
+
+<body>
+
+<div class="content">
+
+<div class="shopping">
+  <h1>Shopping List</h1>
+  <div class="shopping__add">
+    <label for="shopping-input">
+      <input id="shopping-input" placeholder="Add this" type="text">
+    </label>
+    <button type="button" id="shopping-add">Add Item</button>
+  </div>
+  <input class="shopping__filter" id="shopping-filter" placeholder="filter this" type="text">
+</div>
+
+<ul class="list" id="shopping-list">
+</ul>
+</div>
+
+</body>
+
+</html>
