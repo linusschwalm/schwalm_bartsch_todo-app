@@ -53,6 +53,44 @@ function removeTodo(id)
   state.todos.splice(index, 1);
 }
 
+function editTodo(event, id) {
+  const todoIndex = state.todos.findIndex(todo => todo.id === id);
+  const parentElement = event.target.parentElement; // Capture reference to the parent element
+  const inputField = document.createElement('input');
+
+  inputField.value = state.todos[todoIndex].text;
+
+  // Hide other elements in the parent element
+  parentElement.childNodes.forEach(child => {
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      child.classList.add('filtered');
+    }
+  });
+
+  // Clear the parent element content and append the input field
+  parentElement.textContent = '';
+  parentElement.appendChild(inputField);
+
+  inputField.focus();
+  inputField.select();
+
+  inputField.addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+      // Update the text of the todo item in the state
+      state.todos[todoIndex].text = inputField.value;
+
+      // Remove filtering from other elements in the parent element
+      parentElement.childNodes.forEach(child => {
+        if (child.nodeType === Node.ELEMENT_NODE) {
+          child.classList.remove('filtered');
+        }
+      });
+
+      render();
+    }
+  });
+}
+
 function toggleTodoCompleted(id)
 {
   const todo = state.todos.find(todo => todo.id === id);
@@ -66,6 +104,9 @@ const todoAdd$ = document.querySelector("#shopping-add");
 const todoInput$ = document.querySelector("#shopping-input");
 const todoList$ = document.querySelector("#shopping-list");
 const todoFilter$ = document.querySelector("#shopping-filter");
+const todoCompletedHide$ = document.querySelector("#shopping-completed-hide");
+const todoDeleteAll$ = document.querySelector("#shopping-delete-all");
+const todoCompleteShow$ = document.querySelector("#shopping-completed-show");
 
 
 // 4. DOM Node Creation Fn's
@@ -79,6 +120,7 @@ function createTodoItem(todo)
       ${highlightedText}
       ${createTodoCheckBox(id, completed)}
       ${createTodoRemoveButton(id)}
+      ${createTodoEditButton(event, id)}
     </li>
     `;
 }
@@ -103,11 +145,19 @@ function createTodoRemoveButton(id)
 {
   return `
     <button onclick="onRemoveTodo(${id})">
-      Remove
+      🗑️
     </button>
     `;
 }
 
+function createTodoEditButton(event, id)
+{
+  return `
+    <button onclick="editTodo(event, ${id})">
+      ✏️
+    </button>
+    `;
+}
 
 // 5. RENDER FN
 
@@ -155,6 +205,28 @@ function onFilterTodos()
   console.log('state', state);
 }
 
+function onHideCompleted(){
+  state.filteredTodos = state.todos.filter(todo => todo.completed === true);
+  state.todos = state.todos.filter(todo => !todo.completed);
+  render();
+  todoCompletedHide$.classList.add('filtered');
+  todoCompleteShow$.classList.remove('filtered');
+}
+
+function onShowCompleted() {
+  state.todos = state.todos.concat(state.filteredTodos);
+  state.filteredTodos = [];
+  render();
+  todoCompletedHide$.classList.remove('filtered');
+  todoCompleteShow$.classList.add('filtered');
+}
+
+function onDeleteAllItems() {
+  state.todos = [];
+  state.nextId = 1;
+  render();
+}
+
 
 // 7. INIT BINDINGS
 
@@ -172,6 +244,11 @@ todoFilter$.addEventListener('keyup', function (event)
 {
   onFilterTodos();
 });
+
+todoCompletedHide$.addEventListener('click', () => onHideCompleted());
+todoCompleteShow$.addEventListener('click', () => onShowCompleted());
+
+todoDeleteAll$.addEventListener('click', () => onDeleteAllItems());
 
 
 // 8. INITIAL RENDER
