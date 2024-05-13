@@ -1,5 +1,6 @@
 // 1. APPLICATION STATE
-let state = {
+let state =
+{
   todos: [],
   filteredWord: "",
   nextId: 2,
@@ -20,10 +21,12 @@ function storeState()
 }
 
 
-function importTodos(){
+function importTodos()
+{
   fetch('https://dummyjson.com/todos/random')
     .then(res => res.json())
-    .then(data => {
+    .then(data =>
+    {
       console.log(data);
       delete data.userId;
       data.text = data.todo;
@@ -67,7 +70,8 @@ function removeTodo(id)
   state.todos.splice(index, 1);
 }
 
-function editTodo(event, id) {
+function editTodo(event, id)
+{
   const todoIndex = state.todos.findIndex(todo => todo.id === id);
   const parentElement = event.target.parentElement;
   const inputField = document.createElement('input');
@@ -75,8 +79,10 @@ function editTodo(event, id) {
   inputField.value = state.todos[todoIndex].text;
 
 
-  parentElement.childNodes.forEach(child => {
-    if (child.nodeType === Node.ELEMENT_NODE) {
+  parentElement.childNodes.forEach(child =>
+  {
+    if (child.nodeType === Node.ELEMENT_NODE)
+    {
       child.classList.add('filtered');
     }
   });
@@ -87,14 +93,18 @@ function editTodo(event, id) {
   inputField.focus();
   inputField.select();
 
-  inputField.addEventListener('keyup', (event) => {
-    if (event.key === 'Enter') {
+  inputField.addEventListener('keyup', (event) =>
+  {
+    if (event.key === 'Enter')
+    {
 
       state.todos[todoIndex].text = inputField.value;
 
 
-      parentElement.childNodes.forEach(child => {
-        if (child.nodeType === Node.ELEMENT_NODE) {
+      parentElement.childNodes.forEach(child =>
+      {
+        if (child.nodeType === Node.ELEMENT_NODE)
+        {
           child.classList.remove('filtered');
         }
       });
@@ -180,7 +190,7 @@ function render()
   todoList$.innerHTML =
     getFilteredTodos().map(createTodoItem).join('');
 
-    storeState();
+  storeState();
 }
 
 
@@ -219,7 +229,8 @@ function onFilterTodos()
   console.log('state', state);
 }
 
-function onHideCompleted(){
+function onHideCompleted()
+{
   state.filteredTodos = state.todos.filter(todo => todo.completed === true);
   state.todos = state.todos.filter(todo => !todo.completed);
   render();
@@ -227,7 +238,8 @@ function onHideCompleted(){
   todoCompleteShow$.classList.remove('filtered');
 }
 
-function onShowCompleted() {
+function onShowCompleted()
+{
   state.todos = state.todos.concat(state.filteredTodos);
   state.filteredTodos = [];
   render();
@@ -235,7 +247,8 @@ function onShowCompleted() {
   todoCompleteShow$.classList.add('filtered');
 }
 
-function onDeleteAllItems() {
+function onDeleteAllItems()
+{
   state.todos = [];
   state.nextId = 1;
   render();
