@@ -86,8 +86,8 @@ li
 {
   list-style: none;
   font-size: var(--text-regular);
-  padding: 3px;
   margin-right: 50px;
+  padding: 3px 3px 12px;
 }
 
 ul
@@ -99,14 +99,14 @@ ul
   margin: 15px 2px 15px 10px;
   position: absolute;
   top: 3%;
-  left: 23%;
+  left: 10%;
 
 }
 
 button
 {
   text-decoration: none;
-  appearance: none;
+  /*appearance: none; */
   border: none;
   border-radius: 5px;
   background-color: rgba(51, 31, 2, 0.45);
@@ -125,10 +125,6 @@ li:hover
   text-decoration-style: dotted;
 }
 
-li > button, input[type="checkbox"]
-{
-  display: none;
-}
 
 input
 {
@@ -144,7 +140,7 @@ input
 
 .list
 {
-  padding-top: 12rem;
+  margin-top: 12rem;
 }
 
 #shopping-add
@@ -161,14 +157,6 @@ button:hover
 {
   display: none;
 }
-/*
-.highlighted
-{
-  -webkit-box-shadow: 6px 6px 15px 2px #342304;
-  box-shadow: 6px 6px 15px 2px #342304;
-  text-shadow: 1px 1px 3px #2C200D;
-  font-weight: bold;
-}*/
 
 .shopping__filter {
   width: fit-content;
@@ -188,8 +176,8 @@ button:hover
   justify-content: space-evenly;
   flex-direction: row;
   position: absolute;
-  top: 80%;
-  left: 23%;
+  top: 90%;
+  left: 20%;
 }
 
 input[type="checkbox"] {

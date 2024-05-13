@@ -19,6 +19,20 @@ function storeState()
   localStorage.setItem('todo-app', JSON.stringify(state));
 }
 
+
+function importTodos(){
+  fetch('https://dummyjson.com/todos/random')
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      delete data.userId;
+      data.text = data.todo;
+      delete data.todo;
+      state.todos.push(data);
+      render();
+    });
+}
+
 function getFilteredTodos()
 {
   const filterWord = state.filteredWord.toLowerCase();
@@ -55,19 +69,18 @@ function removeTodo(id)
 
 function editTodo(event, id) {
   const todoIndex = state.todos.findIndex(todo => todo.id === id);
-  const parentElement = event.target.parentElement; // Capture reference to the parent element
+  const parentElement = event.target.parentElement;
   const inputField = document.createElement('input');
 
   inputField.value = state.todos[todoIndex].text;
 
-  // Hide other elements in the parent element
+
   parentElement.childNodes.forEach(child => {
     if (child.nodeType === Node.ELEMENT_NODE) {
       child.classList.add('filtered');
     }
   });
 
-  // Clear the parent element content and append the input field
   parentElement.textContent = '';
   parentElement.appendChild(inputField);
 
@@ -76,10 +89,10 @@ function editTodo(event, id) {
 
   inputField.addEventListener('keyup', (event) => {
     if (event.key === 'Enter') {
-      // Update the text of the todo item in the state
+
       state.todos[todoIndex].text = inputField.value;
 
-      // Remove filtering from other elements in the parent element
+
       parentElement.childNodes.forEach(child => {
         if (child.nodeType === Node.ELEMENT_NODE) {
           child.classList.remove('filtered');
@@ -107,6 +120,7 @@ const todoFilter$ = document.querySelector("#shopping-filter");
 const todoCompletedHide$ = document.querySelector("#shopping-completed-hide");
 const todoDeleteAll$ = document.querySelector("#shopping-delete-all");
 const todoCompleteShow$ = document.querySelector("#shopping-completed-show");
+const todoImport$ = document.querySelector("#shopping-import");
 
 
 // 4. DOM Node Creation Fn's
@@ -166,7 +180,7 @@ function render()
   todoList$.innerHTML =
     getFilteredTodos().map(createTodoItem).join('');
 
-  storeState();
+    storeState();
 }
 
 
@@ -249,6 +263,8 @@ todoCompletedHide$.addEventListener('click', () => onHideCompleted());
 todoCompleteShow$.addEventListener('click', () => onShowCompleted());
 
 todoDeleteAll$.addEventListener('click', () => onDeleteAllItems());
+
+todoImport$.addEventListener('click', () => importTodos());
 
 
 // 8. INITIAL RENDER
