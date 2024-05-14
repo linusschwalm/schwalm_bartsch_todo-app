@@ -9,10 +9,13 @@ let state =
 
 // 2. STATE ACCESSORS/MUTATORS FN'S
 
-const storedState = localStorage.getItem('todo-app');
-if (storedState)
+function loadState()
 {
-  state = JSON.parse(storedState);
+  const storedState = localStorage.getItem('todo-app');
+  if (storedState)
+  {
+    state = JSON.parse(storedState);
+  }
 }
 
 function storeState()
@@ -187,8 +190,7 @@ function createTodoEditButton(event, id)
 
 function render()
 {
-  todoList$.innerHTML =
-    getFilteredTodos().map(createTodoItem).join('');
+  todoList$.innerHTML = getFilteredTodos().map(createTodoItem).join('');
 
   storeState();
 }
@@ -273,6 +275,7 @@ todoFilter$.addEventListener('keyup', function (event)
 });
 
 todoCompletedHide$.addEventListener('click', () => onHideCompleted());
+
 todoCompleteShow$.addEventListener('click', () => onShowCompleted());
 
 todoDeleteAll$.addEventListener('click', () => onDeleteAllItems());
@@ -282,5 +285,6 @@ todoImport$.addEventListener('click', () => importTodos());
 
 // 8. INITIAL RENDER
 
+loadState();
 render();
 console.log('state', state);
